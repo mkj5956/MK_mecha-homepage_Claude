@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MK Mecha 기계설계</title>
+  <meta name="description" content="기계설계·자동화 장비 설계 의뢰. 텍스트나 손그림만으로 3D 컨셉 모델과 3단계 예상 견적을 바로 확인하세요.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23e8710a'/><text x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>MK</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="logo">MK</span><span data-cfg="company">MK Mecha</span></a>
+      <nav>
+        <a href="#request">설계 의뢰</a>
+        <a href="#concept">3D 컨셉</a>
+        <a href="#quote">간단 견적</a>
+        <a href="#contact">연락처</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>만들고 싶은 기계를 <b>말로 설명</b>하세요.<br>3D 컨셉과 견적을 바로 보여드립니다.</h1>
+      <p class="lead" data-cfg="slogan"></p>
+      <div class="cta">
+        <a class="btn" href="#request">설계 의뢰 시작하기</a>
+        <a class="btn ghost" href="#contact">전화·이메일 상담</a>
+      </div>
+      <div class="steps">
+        <div><b>1</b>요구사항 입력<br><span class="muted">텍스트 · 손그림 · PDF</span></div>
+        <div><b>2</b>자동 분석<br><span class="muted">추가 확인 질문 · 설계 제안</span></div>
+        <div><b>3</b>3D 컨셉<br><span class="muted">작동 애니메이션 · 치수 조정</span></div>
+        <div><b>4</b>3단계 견적<br><span class="muted">저가 · 표준 · 고급</span></div>
+        <div><b>5</b>의뢰 접수<br><span class="muted">설계자 검토 후 연락</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div id="shareBanner" class="card hidden" style="margin-top:24px;border-color:var(--accent)">
+      <h3 style="margin:0">설계자가 보낸 컨셉 모델입니다 <span class="badge blue" id="shareNo"></span></h3>
+      <p class="muted" style="margin:4px 0 0">3D 화면에서 작동을 확인하고 치수를 조정한 뒤, 아래에서 <b>수정 요청</b>을 보내주세요.</p>
+    </div>
+
+    <!-- 1. 의뢰 내용 -->
+    <section class="block" id="request">
+      <div class="sec-title"><span class="num">1</span><h2>무엇을 만들고 싶으신가요?</h2></div>
+      <div class="card">
+        <div class="field"><span>제품 유형 (모르면 '자동 판별' 그대로 두세요)</span></div>
+        <div class="types" id="typeChips"></div>
+        <label class="field"><span>제품명 / 한 줄 설명</span><input id="title" maxlength="80" placeholder="예) 박스 이송용 벨트 컨베이어"></label>
+        <label class="field"><span>용도 · 성능 · 사용 목적 (자세할수록 정확합니다)</span>
+          <textarea id="desc" rows="6" placeholder="예) 식품 공장에서 10kg 박스를 다음 공정으로 옮기는 컨베이어입니다.&#10;길이 3m, 벨트폭 500mm, 높이 750mm, 속도 20m/min 정도, 총 하중 50kg.&#10;2대 필요하고 6주 이내 납품 희망합니다."></textarea></label>
+        <div class="field"><span>손그림 · 스케치 · 참고 도면 업로드 (이미지 / PDF, 파일당 최대 <b data-cfg="maxUploadMB"></b>MB)</span></div>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="파일 업로드">
+          📎 클릭하거나 파일을 끌어다 놓으세요 <br><span class="muted">JPG · PNG · PDF · (DXF/STEP 등 CAD 파일도 첨부만 가능)</span>
+          <input type="file" id="files" multiple accept="image/*,.pdf,.dxf,.dwg,.step,.stp,.igs,.iges,.stl" hidden>
+        </div>
+        <div class="thumbs" id="thumbs"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn ghost sm" id="ocrBtn" type="button" disabled>🔍 첨부 파일에서 글자·치수 읽기 (OCR)</button>
+          <span class="muted" id="ocrStatus"></span>
+        </div>
+        <div class="row" style="margin-top:18px">
+          <button class="btn" id="analyzeBtn" type="button">분석하고 3D 컨셉 보기 →</button>
+          <span class="muted">입력 내용은 제출 전까지 이 기기 밖으로 전송되지 않습니다.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 분석 결과 -->
+    <section class="block locked" id="analysis">
+      <div class="sec-title"><span class="num">2</span><h2>분석 결과 · 추가 확인 사항</h2></div>
+      <div class="grid2">
+        <div class="card">
+          <h4>판별된 제품 유형</h4>
+          <p id="typeResult" style="font-size:18px;font-weight:800;margin:0"></p>
+          <p class="muted" id="typeConf"></p>
+          <h4 style="margin-top:14px">읽어낸 사양</h4>
+          <ul class="evidence" id="evidence"></ul>
+          <h4 style="margin-top:14px">설계 제안</h4>
+          <ul class="sugg" id="sugg"></ul>
+        </div>
+        <div class="card">
+          <h4>설계·제작을 위해 확인이 필요한 사항</h4>
+          <p class="muted">아는 만큼만 답해 주세요. 수치 질문에 답하면 3D 모델에 바로 반영됩니다.</p>
+          <div class="qa" id="qa"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 3D 컨셉 -->
+    <section class="block locked" id="concept">
+      <div class="sec-title"><span class="num">3</span><h2>3D 컨셉 모델 · 작동 검증</h2></div>
+      <p class="muted">마우스 드래그: 회전 · 휠: 확대 · 우클릭 드래그: 이동 · 부품 클릭: 부품 치수 표시. 오른쪽에서 크기를 직접 정해 보세요.</p>
+      <div id="panel"></div>
+      <div class="row" style="margin-top:10px" id="refRow"></div>
+    </section>
+
+    <!-- 4. 견적 -->
+    <section class="block locked" id="quote">
+      <div class="sec-title"><span class="num">4</span><h2>간단 견적 (예상 범위)</h2></div>
+      <div class="row" style="margin-bottom:12px">
+        <label class="field" style="margin:0;width:140px"><span>제작 수량</span><input type="number" id="qty" min="1" max="100" value="1"></label>
+        <p class="muted" style="margin:18px 0 0">설계비·제작비·구매품·조립·시운전 포함, 부가세 별도. 상세 견적은 설계자 검토 후 확정됩니다.</p>
+      </div>
+      <div class="grid3" id="tiers"></div>
+    </section>
+
+    <!-- 5. 의뢰인 정보 -->
+    <section class="block locked" id="submit">
+      <div class="sec-title"><span class="num">5</span><h2>의뢰인 정보 · 의뢰 접수</h2></div>
+      <form class="card" id="form" autocomplete="on">
+        <div class="grid2">
+          <label class="field"><span>성함 *</span><input name="name" required autocomplete="name"></label>
+          <label class="field"><span>회사명</span><input name="company" autocomplete="organization"></label>
+          <label class="field"><span>연락처 *</span><input name="phone" required type="tel" autocomplete="tel" placeholder="010-0000-0000"></label>
+          <label class="field"><span>이메일 *</span><input name="email" required type="email" autocomplete="email"></label>
+          <label class="field"><span>희망 납기</span><input name="deadline" type="date"></label>
+          <label class="field"><span>선호 연락 방법</span><select name="contactPref"><option>전화</option><option>이메일</option><option>문자/카카오톡</option></select></label>
+        </div>
+        <label class="field"><span>기타 요청사항</span><textarea name="etc" rows="3" placeholder="설치 장소, 예산 상한, 방문 상담 희망 등"></textarea></label>
+        <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <label class="chk" style="margin-bottom:14px"><input type="checkbox" name="agree" required> 개인정보(성함·연락처·이메일) 수집·이용에 동의합니다. (목적: 설계 상담·견적 회신, 보유: 상담 종료 후 1년)</label>
+        <div class="row">
+          <button class="btn" type="submit" id="submitBtn">설계 의뢰 접수하기</button>
+          <span class="muted" id="submitStatus"></span>
+        </div>
+      </form>
+      <div class="card hidden" id="done" style="text-align:center;padding:40px">
+        <h2>✅ 의뢰가 접수되었습니다</h2>
+        <p>접수번호 <b id="doneNo"></b></p>
+        <p class="muted">설계자가 내용을 검토한 뒤 영업일 기준 1~2일 내 연락드립니다.</p>
+      </div>
+    </section>
+
+    <section class="block" id="contact">
+      <div class="sec-title"><h2>연락처</h2></div>
+      <div class="card contact-box">
+        <div><b>이메일</b><a data-cfg-mail></a></div>
+        <div><b>전화</b><a data-cfg-tel></a></div>
+        <div data-cfg-wrap="kakao"><b>카카오톡</b><a data-cfg-kakao target="_blank" rel="noopener">오픈채팅 상담</a></div>
+        <div data-cfg-wrap="address"><b>주소</b><span data-cfg="address"></span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap row between">
+      <span>© <span id="yr"></span> <span data-cfg="companyKo"></span> <span data-cfg="bizNo"></span></span>
+      <a href="admin.html" class="muted" style="text-decoration:none">·</a>
+    </div>
+  </footer>
+
+  <script type="module" src="js/customer.js"></script>
+</body>
+</html>
