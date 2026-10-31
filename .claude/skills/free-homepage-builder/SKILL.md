@@ -1,6 +1,6 @@
 ---
-name: serverless-static-web
-description: 서버 비용 0원·유료 API 미사용으로 홈페이지/웹앱을 만드는 서버리스 구성 방식. GitHub Pages(정적 호스팅) + 브라우저 JS(클라이언트 처리) + Google Apps Script(무료 백엔드: 시트·드라이브·메일) + localStorage(관리자 데이터) + Claude/ChatGPT 구독 복사·붙여넣기(AI). 사용자가 "서버 없이", "무료로 운영", "API 없이", "구독만으로", "GitHub Pages", "Apps Script", "서버리스 홈페이지", "문의/접수 폼 있는 홈페이지", "관리자 페이지 있는 정적 사이트"를 언급하거나, 소규모 사업자·개인용 홈페이지·접수/견적/예약/주문 폼·내부 관리 도구를 새로 만들 때 사용한다. Use for building zero-cost serverless static websites with a free Google Apps Script backend and no paid AI APIs.
+name: free-homepage-builder
+description: [무료 홈페이지 제작] 서버 비용 0원·유료 API 미사용으로 홈페이지/웹앱을 만드는 서버리스 구성 방식. GitHub Pages(정적 호스팅) + 브라우저 JS(클라이언트 처리) + Google Apps Script(무료 백엔드: 시트·드라이브·메일) + localStorage(관리자 데이터) + Claude/ChatGPT 구독 복사·붙여넣기(AI). 사용자가 "서버 없이", "무료로 운영", "API 없이", "구독만으로", "GitHub Pages", "Apps Script", "서버리스 홈페이지", "문의/접수 폼 있는 홈페이지", "관리자 페이지 있는 정적 사이트"를 언급하거나, 소규모 사업자·개인용 홈페이지·접수/견적/예약/주문 폼·내부 관리 도구를 새로 만들 때 사용한다. Use for building zero-cost serverless static websites with a free Google Apps Script backend and no paid AI APIs.
 ---
 
 # 서버리스 정적 웹사이트 구성법
