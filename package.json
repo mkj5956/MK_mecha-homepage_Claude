@@ -1,0 +1,11 @@
+{
+  "name": "mk-mecha-homepage",
+  "private": true,
+  "type": "module",
+  "description": "기계설계 자동화 홈페이지 (정적 사이트, 빌드 불필요)",
+  "scripts": {
+    "serve": "python3 -m http.server 8765",
+    "test": "node tests/engine.test.mjs && node tests/analyzer.test.mjs",
+    "test:e2e": "node tests/smoke.customer.cjs && node tests/smoke.admin.cjs"
+  }
+}
