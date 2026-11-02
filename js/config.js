@@ -19,7 +19,7 @@ export const CONFIG = {
 
   // ▼ 관리자 로그인 = SHA-256("아이디:비밀번호") 해시. 아이디·비밀번호 원문은 저장소에 두지 않습니다.
   //   변경 방법: 관리자 페이지 > 설정 > "로그인 해시 생성" → 결과를 이 값과 교체 후 커밋
-  adminLoginSha256: '78bc13559046dd0bac4b62738a84e1391971a80428731fe9c1b8c4bcfd07eeb2',
+  adminLoginSha256: '58f852ade280528210aca0d633037741ed66e10da1d6f4d3d7def3b600dbdf77',
 
   maxUploadMB: 15,
 };

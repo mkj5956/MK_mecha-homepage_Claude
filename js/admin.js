@@ -1,7 +1,7 @@
 // =============================================================
 //  관리자 페이지 — 라우터, 로그인, 대시보드, 의뢰함, 프로젝트 목록, 설정
 // =============================================================
-import { CONFIG } from './config.js';
+import { CONFIG } from './config.js?v=20261102';
 import { db, remote } from './store.js';
 import { $, $$, esc, toast, sha256, download, today, uid, daysBetween } from './util.js';
 import { analyze } from './analyzer.js';
@@ -18,6 +18,12 @@ export const STATUSES = ['상담', '견적', '설계', '발주', '제작', '납�
 export const statusBadge = (s) => `<span class="badge ${{ 상담: '', 견적: 'blue', 설계: 'blue', 발주: 'warn', 제작: 'warn', 납품: 'ok', 완료: 'ok', 보류: 'bad' }[s] || ''}">${esc(s)}</span>`;
 
 // ---------------- 로그인 ----------------
+// 예전 화면이 캐시로 남아 아이디 칸이 없으면 자동으로 추가
+if (!$('#uid')) {
+  const pwField = $('#pw').closest('.field');
+  pwField.insertAdjacentHTML('beforebegin', '<label class="field"><span>아이디</span><input id="uid" autocomplete="username" required></label>');
+  $('#uid').focus();
+}
 async function tryLogin(id, pw) { return (await sha256(`${id.trim()}:${pw}`)) === CONFIG.adminLoginSha256; }
 $('#loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -187,7 +193,7 @@ function renderSettings() {
     <div>
       <div class="card"><h4>관리자 아이디 · 비밀번호 변경</h4>
         <p class="muted">새 아이디·비밀번호로 로그인 해시를 만든 뒤 <code>js/config.js</code>의 <code>adminLoginSha256</code> 값을 교체하고 GitHub에 커밋하세요. (Claude에게 "관리자 비밀번호 바꿔줘"라고 해도 됩니다)</p>
-        <div class="row"><input id="newid" placeholder="새 아이디" autocomplete="off" style="flex:1"><input type="password" id="newpw" placeholder="새 비밀번호 (10자 이상)" autocomplete="new-password" style="flex:1"><button class="btn sm" id="hashBtn">로그인 해시 생성</button></div>
+        <div class="row"><input id="newid" placeholder="새 아이디" autocomplete="off" style="flex:1"><input type="password" id="newpw" placeholder="새 비밀번호 (6자 이상)" autocomplete="new-password" style="flex:1"><button class="btn sm" id="hashBtn">로그인 해시 생성</button></div>
         <div class="pre hidden" id="hashOut" style="margin-top:10px"></div></div>
       <div class="card" style="margin-top:16px"><h4>백업 · 복원</h4>
         <p class="muted">모든 관리자 데이터는 이 브라우저(localStorage)에 저장됩니다. 주 1회 백업을 권장합니다.</p>
@@ -207,7 +213,7 @@ function renderSettings() {
   $('#hashBtn').onclick = async () => {
     const id = $('#newid').value.trim(), v = $('#newpw').value;
     if (!id) return toast('아이디를 입력하세요.');
-    if (v.length < 10) return toast('비밀번호는 10자 이상 입력하세요.');
+    if (v.length < 6) return toast('비밀번호는 6자 이상 입력하세요.');
     const h = await sha256(`${id}:${v}`); const o = $('#hashOut'); o.classList.remove('hidden');
     o.textContent = `adminLoginSha256: '${h}',`;
   };
