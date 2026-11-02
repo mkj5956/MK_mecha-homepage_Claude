@@ -1,5 +1,14 @@
 # MK Mecha — 기계설계 자동화 홈페이지
 
+## 🌐 홈페이지 바로가기
+
+| 페이지 | 주소 |
+|---|---|
+| **고객 페이지** (설계 의뢰 · 3D 컨셉 · 간단 견적) | **[https://mkj5956.github.io/MK_mecha-homepage_Claude/](https://mkj5956.github.io/MK_mecha-homepage_Claude/)** |
+| **관리자 페이지** (의뢰함 · 견적 · 도면 · 외주 · 일정) | **[https://mkj5956.github.io/MK_mecha-homepage_Claude/admin.html](https://mkj5956.github.io/MK_mecha-homepage_Claude/admin.html)** |
+
+> 링크를 누르면 바로 열립니다. 새 탭으로 열려면 Ctrl(맥은 ⌘)을 누른 채 클릭하세요.
+
 고객이 **텍스트·손그림·PDF**로 설계를 의뢰하면 → 자동 분석·추가 질문 → **3D 컨셉(작동 애니메이션·간섭 검증·치수 조정)** → **저가/표준/고가 견적** → 접수.
 관리자는 **2D 가공도면 자동 생성(치수·주기·BOM, SVG/DXF)** → **외주처 매칭·견적요청·발주** → **수주~납품 일정(간트)** 까지 한 곳에서 관리합니다.
 
