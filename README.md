@@ -34,7 +34,7 @@
 2. **GitHub Pages 켜기** — 저장소 Settings → Pages → Branch `main` / `(root)` → Save. 몇 분 후 `https://<아이디>.github.io/<저장소>/` 로 접속.
 3. **의뢰 접수 서버 연결 (선택이지만 권장)** — [`apps-script/README.md`](apps-script/README.md) 따라 웹앱 URL 발급 후 `js/config.js` 의 `appsScriptUrl` 에 입력.
    미설정 시 고객 의뢰는 "의뢰서 JSON 저장 + 이메일 작성창" 방식으로 전달됩니다.
-4. **관리자 비밀번호 변경** — `admin.html` 접속(기본 `admin1234`) → 설정 → 해시 생성 → `js/config.js` 의 `adminPasswordSha256` 교체 후 커밋.
+4. **관리자 아이디·비밀번호** — 설정되어 있습니다(원문은 저장소에 없음). 바꿀 때는 관리자 → 설정 → "로그인 해시 생성" → `js/config.js` 의 `adminLoginSha256` 교체 후 커밋, 또는 Claude에게 요청.
 5. **외주처 등록** — 관리자 → 외주처 메뉴에서 예시 업체를 실제 거래처로 교체.
 6. **단가 보정** — 설정 메뉴의 시간당 단가·관리비율·보정계수, 또는 `js/kb.js` 의 재질 단가/구매품 가격.
 
