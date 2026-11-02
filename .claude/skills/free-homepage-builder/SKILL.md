@@ -49,6 +49,7 @@ description: [무료 홈페이지 제작] 서버 비용 0원·유료 API 미사�
 6. **AI 도우미(선택)** — 데이터를 채운 프롬프트 생성 → 복사 → 채팅 링크 → 답변 붙여넣기 → JSON 적용. **API 호출 코드는 절대 넣지 않는다.**
 7. **검증** — 로컬 서버(`python3 -m http.server`) + Playwright로 콘솔 에러 0건, 모바일 폭(390px) 가로 스크롤 없음, 폼 제출(엔드포인트 미설정 시 대체 경로) 확인.
 8. **문서** — README(설치 30분 가이드·한계), apps-script/README, CLAUDE.md(유지보수 규칙).
+9. **배포 안내** — `references/github-setup.md` 를 사용자 저장소 주소로 채워서 단계별 링크와 함께 안내한다. 저장소 설정(공개 전환·Pages 켜기)은 Claude가 대신 할 수 없으므로 사용자가 직접 해야 한다는 점을 먼저 말한다.
 
 ## 4. 반드시 지킬 규칙
 
@@ -61,6 +62,7 @@ description: [무료 홈페이지 제작] 서버 비용 0원·유료 API 미사�
 - **엔드포인트 미설정 시 대체 경로**: 폼 데이터를 JSON 다운로드 + `mailto:` 작성창으로 넘긴다. 사이트가 깨지면 안 된다.
 - **스팸 방지**: 숨김 honeypot 필드 + Apps Script 측 CacheService 중복 제출 차단.
 - **개인정보**: 수집 동의 체크박스(목적·보유기간 명시)를 넣는다.
+- **배포 전 확인**: 저장소가 비공개인지 먼저 확인한다. 무료 계정의 비공개 저장소는 GitHub Pages를 켤 수 없으므로 공개 전환 / GitHub Pro / Cloudflare Pages 중 선택하게 한다. 공개 전에는 관리자 비밀번호를 기본값에서 반드시 바꾼다.
 - **반응형**: 16px 좌우 여백, 390px 폭에서 가로 스크롤 없음. 다크모드는 CSS 변수로 지원.
 
 ## 5. 자주 하는 실수
@@ -73,6 +75,9 @@ description: [무료 홈페이지 제작] 서버 비용 0원·유료 API 미사�
 | GitHub Pages에서 `_`로 시작하는 파일 404 | `.nojekyll` 파일 추가 |
 | 모듈 import 실패 (로컬 `file://`) | 반드시 http 서버로 열기 |
 | 관리자 데이터 사라짐 | 다른 브라우저·시크릿 모드·캐시 삭제 → 백업 복원 |
+| Pages 메뉴에 Upgrade 안내 | 무료 계정 + 비공개 저장소 → 공개 전환 또는 Cloudflare Pages (`references/github-setup.md`) |
+| 사용자가 Settings 메뉴를 못 찾음 | GitHub 모바일 앱에는 없음 → 브라우저로 접속 |
+| Claude가 새 저장소를 못 찾음 | Claude GitHub App 권한이 "선택한 저장소만" → 저장소 추가 필요 |
 | 공유 링크가 너무 김 | `CompressionStream('deflate-raw')` + base64url 사용, 큰 데이터는 시트에 저장하고 ID만 공유 |
 
 ## 6. 사용자에게 설명할 때 (비개발자용)
@@ -86,4 +91,5 @@ description: [무료 홈페이지 제작] 서버 비용 0원·유료 API 미사�
 - `references/client-snippets.md` — api / store / share / ai-paste / util 코드
 - `references/apps-script-template.gs` — 범용 백엔드 (submit / list / update / ping)
 - `references/deploy.md` — GitHub Pages + Apps Script 설치 절차(사용자 안내용)
+- `references/github-setup.md` — GitHub 가입·저장소·Claude 권한·PR 머지·공개 전환·Pages·Cloudflare·도메인·문제 해결 (비개발자용 단계별)
 - `references/limits.md` — 무료 한도와 확장 경로

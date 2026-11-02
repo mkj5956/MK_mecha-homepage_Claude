@@ -1,6 +1,7 @@
 # 설치 절차 (사용자 안내용 — README에 그대로 옮겨 쓰기)
 
 ## A. 홈페이지 공개 (GitHub Pages, 5분)
+> 비공개 저장소, 모바일 앱, 권한 문제 등 막히는 경우는 `github-setup.md` 참고.
 1. 코드를 GitHub 저장소 `main` 브랜치에 올린다 (작업 브랜치라면 PR로 머지).
 2. 저장소 **Settings → Pages → Branch: `main` / `(root)` → Save**
 3. 1~3분 후 `https://<아이디>.github.io/<저장소명>/` 접속.
