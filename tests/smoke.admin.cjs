@@ -10,9 +10,12 @@ const { chromium } = require('playwright');
   page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
   page.on('dialog', (d) => d.accept(d.type() === 'prompt' ? 'Rev.1' : undefined));
   await page.goto(base + 'admin.html');
-  await page.fill('#pw', 'wrong'); await page.click('#loginForm button');
+  await page.fill('#uid', 'nobody'); await page.fill('#pw', 'wrong'); await page.click('#loginForm button');
   console.log('wrong pw msg:', await page.textContent('#loginMsg'));
-  await page.fill('#pw', 'admin1234'); await page.click('#loginForm button');
+  // 실제 계정은 저장소에 두지 않음: ADMIN_ID / ADMIN_PW 환경변수로 로그인 검증, 없으면 세션 우회
+  if (process.env.ADMIN_ID && process.env.ADMIN_PW) {
+    await page.fill('#uid', process.env.ADMIN_ID); await page.fill('#pw', process.env.ADMIN_PW); await page.click('#loginForm button');
+  } else { await page.evaluate(() => sessionStorage.setItem('mk_admin', '1')); await page.reload(); }
   await page.waitForSelector('.kpis');
   // 의뢰 JSON 불러오기 → 전환
   const req = { id: 'REQ-TEST-1', customer: { name: '홍길동', company: '테스트산업', phone: '010-1111-2222', email: 'test@example.com' }, request: { title: '베어링 압입 프레스', text: '베어링 압입용 프레스 1톤, 스트로크 80mm, 작업자 수동 투입', qty: 2 }, design: null, quote: { tier: 'mid', selected: 9000000 } };

@@ -17,9 +17,9 @@ export const CONFIG = {
   //   비워두면 의뢰서가 이메일(mailto)+JSON 파일 방식으로 전달됩니다.
   appsScriptUrl: '',
 
-  // ▼ 관리자 페이지 비밀번호의 SHA-256 해시 (기본: admin1234 → 반드시 변경)
-  //   변경 방법: 관리자 페이지 > 설정 > "비밀번호 해시 생성"
-  adminPasswordSha256: 'ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270',
+  // ▼ 관리자 로그인 = SHA-256("아이디:비밀번호") 해시. 아이디·비밀번호 원문은 저장소에 두지 않습니다.
+  //   변경 방법: 관리자 페이지 > 설정 > "로그인 해시 생성" → 결과를 이 값과 교체 후 커밋
+  adminLoginSha256: '78bc13559046dd0bac4b62738a84e1391971a80428731fe9c1b8c4bcfd07eeb2',
 
   maxUploadMB: 15,
 };

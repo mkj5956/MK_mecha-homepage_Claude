@@ -18,16 +18,15 @@ export const STATUSES = ['상담', '견적', '설계', '발주', '제작', '납�
 export const statusBadge = (s) => `<span class="badge ${{ 상담: '', 견적: 'blue', 설계: 'blue', 발주: 'warn', 제작: 'warn', 납품: 'ok', 완료: 'ok', 보류: 'bad' }[s] || ''}">${esc(s)}</span>`;
 
 // ---------------- 로그인 ----------------
-async function tryLogin(pw) { return (await sha256(pw)) === CONFIG.adminPasswordSha256; }
+async function tryLogin(id, pw) { return (await sha256(`${id.trim()}:${pw}`)) === CONFIG.adminLoginSha256; }
 $('#loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (await tryLogin($('#pw').value)) { sessionStorage.setItem('mk_admin', '1'); enter(); }
-  else { $('#loginMsg').textContent = '비밀번호가 올바르지 않습니다.'; $('#pw').select(); }
+  if (await tryLogin($('#uid').value, $('#pw').value)) { sessionStorage.setItem('mk_admin', '1'); enter(); }
+  else { $('#loginMsg').textContent = '아이디 또는 비밀번호가 올바르지 않습니다.'; $('#pw').select(); }
 });
 $('#logout').addEventListener('click', (e) => { e.preventDefault(); sessionStorage.removeItem('mk_admin'); location.reload(); });
 function enter() {
   $('#login').classList.add('hidden');
-  if (CONFIG.adminPasswordSha256.startsWith('ac9689e2')) setTimeout(() => toast('⚠ 기본 비밀번호(admin1234) 사용 중 — 설정에서 변경하세요.', 5000), 600);
   route();
 }
 if (sessionStorage.getItem('mk_admin') === '1') enter();
@@ -186,9 +185,9 @@ function renderSettings() {
       <div class="row"><button class="btn">저장</button><button type="button" class="btn ghost" id="ping">연결 테스트</button></div>
     </form>
     <div>
-      <div class="card"><h4>관리자 비밀번호 변경</h4>
-        <p class="muted">새 비밀번호의 해시를 만든 뒤 <code>js/config.js</code>의 <code>adminPasswordSha256</code> 값을 교체하고 GitHub에 커밋하세요.</p>
-        <div class="row"><input type="password" id="newpw" placeholder="새 비밀번호 (8자 이상)" style="flex:1"><button class="btn sm" id="hashBtn">해시 생성</button></div>
+      <div class="card"><h4>관리자 아이디 · 비밀번호 변경</h4>
+        <p class="muted">새 아이디·비밀번호로 로그인 해시를 만든 뒤 <code>js/config.js</code>의 <code>adminLoginSha256</code> 값을 교체하고 GitHub에 커밋하세요. (Claude에게 "관리자 비밀번호 바꿔줘"라고 해도 됩니다)</p>
+        <div class="row"><input id="newid" placeholder="새 아이디" autocomplete="off" style="flex:1"><input type="password" id="newpw" placeholder="새 비밀번호 (10자 이상)" autocomplete="new-password" style="flex:1"><button class="btn sm" id="hashBtn">로그인 해시 생성</button></div>
         <div class="pre hidden" id="hashOut" style="margin-top:10px"></div></div>
       <div class="card" style="margin-top:16px"><h4>백업 · 복원</h4>
         <p class="muted">모든 관리자 데이터는 이 브라우저(localStorage)에 저장됩니다. 주 1회 백업을 권장합니다.</p>
@@ -206,9 +205,11 @@ function renderSettings() {
   };
   $('#ping').onclick = async () => { try { const r = await remote.ping(); toast(`연결 성공 — 시트 의뢰 ${r.count ?? '?'}건`); } catch (err) { toast('연결 실패: ' + err.message, 5000); } };
   $('#hashBtn').onclick = async () => {
-    const v = $('#newpw').value; if (v.length < 8) return toast('8자 이상 입력하세요.');
-    const h = await sha256(v); const o = $('#hashOut'); o.classList.remove('hidden');
-    o.textContent = `adminPasswordSha256: '${h}',`;
+    const id = $('#newid').value.trim(), v = $('#newpw').value;
+    if (!id) return toast('아이디를 입력하세요.');
+    if (v.length < 10) return toast('비밀번호는 10자 이상 입력하세요.');
+    const h = await sha256(`${id}:${v}`); const o = $('#hashOut'); o.classList.remove('hidden');
+    o.textContent = `adminLoginSha256: '${h}',`;
   };
   $('#bk').onclick = () => download(`mk_admin_backup_${today()}.json`, db.exportJSON(), 'application/json');
   $('#rs').onchange = async (e) => { try { db.importJSON(await e.target.files[0].text()); toast('복원했습니다.'); route(); } catch (err) { toast('복원 실패: ' + err.message); } };
